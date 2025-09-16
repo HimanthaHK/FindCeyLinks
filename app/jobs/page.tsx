@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { db } from "@/lib/firebase";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, DocumentData, Timestamp } from "firebase/firestore";
 import Link from "next/link";
 
 interface Job {
@@ -11,7 +11,7 @@ interface Job {
   company: string;
   location: string;
   description: string;
-  createdAt: any;
+  createdAt: Timestamp | null;
 }
 
 export default function JobsPage() {
@@ -27,7 +27,17 @@ export default function JobsPage() {
         const jobsData: Job[] = [];
 
         querySnapshot.forEach((doc) => {
-          const jobData = { id: doc.id, ...doc.data() } as Job;
+          const data = doc.data() as DocumentData;
+
+          const jobData: Job = {
+            id: doc.id,
+            title: data.title ?? "",
+            company: data.company ?? "",
+            location: data.location ?? "",
+            description: data.description ?? "",
+            createdAt: data.createdAt ?? null,
+          };
+
           jobsData.push(jobData);
         });
 

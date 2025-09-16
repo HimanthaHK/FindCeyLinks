@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { db } from '@/lib/firebase';
 import { collection, addDoc, getDocs } from 'firebase/firestore';
 
@@ -11,32 +11,36 @@ export default function FirebaseTest() {
   const testConnection = async () => {
     setStatus('testing');
     setMessage('Testing Firebase connection...');
-    
+
     try {
       // Test write operation
       const testData = {
         test: true,
         timestamp: new Date(),
-        message: 'Firebase connection test'
+        message: 'Firebase connection test',
       };
-      
+
       console.log('Attempting to write test data:', testData);
       const docRef = await addDoc(collection(db, 'connection_tests'), testData);
       console.log('Write successful, document ID:', docRef.id);
-      
+
       // Test read operation
       console.log('Attempting to read test data...');
       const querySnapshot = await getDocs(collection(db, 'connection_tests'));
       const documents = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
       console.log('Read successful, documents:', documents);
-      
+
       setStatus('success');
       setMessage(`Firebase connection successful! Document ID: ${docRef.id}`);
-      
-    } catch (error: any) {
+
+    } catch (error: unknown) {
       console.error('Firebase test error:', error);
+
+      // Properly type-check unknown error
+      const errorMessage =
+        error instanceof Error ? error.message : 'Unknown error';
       setStatus('error');
-      setMessage(`Error: ${error.message || 'Unknown error'}`);
+      setMessage(`Error: ${errorMessage}`);
     }
   };
 
@@ -50,17 +54,21 @@ export default function FirebaseTest() {
       >
         {status === 'testing' ? 'Testing...' : 'Test Connection'}
       </button>
-      
+
       {message && (
-        <div className={`mt-3 p-2 rounded ${
-          status === 'success' ? 'bg-green-100 text-green-800' :
-          status === 'error' ? 'bg-red-100 text-red-800' :
-          'bg-blue-100 text-blue-800'
-        }`}>
+        <div
+          className={`mt-3 p-2 rounded ${
+            status === 'success'
+              ? 'bg-green-100 text-green-800'
+              : status === 'error'
+              ? 'bg-red-100 text-red-800'
+              : 'bg-blue-100 text-blue-800'
+          }`}
+        >
           {message}
         </div>
       )}
-      
+
       <div className="mt-3 text-sm text-gray-600">
         <p>Check browser console for detailed logs.</p>
         <p>Make sure Firestore is enabled in your Firebase project.</p>
