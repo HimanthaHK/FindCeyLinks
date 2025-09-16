@@ -1,11 +1,17 @@
 "use client";
+
 import FirebaseTest from '@/components/FirebaseTest';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { db } from "@/lib/firebase";
 import { collection, addDoc, Timestamp } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 
 export default function AdminPage() {
+  const router = useRouter();
+  const [loadingPage, setLoadingPage] = useState(true);
+  const [username, setUsername] = useState<string | null>(null);
+
+  // Job form states
   const [title, setTitle] = useState("");
   const [company, setCompany] = useState("");
   const [location, setLocation] = useState("");
@@ -14,11 +20,21 @@ export default function AdminPage() {
   const [category, setCategory] = useState("");
   const [field, setField] = useState("Remote");
   const [jobType, setJobType] = useState("Job");
-  const [deleteAfter, setDeleteAfter] = useState("Never"); // 🔹 New
+  const [deleteAfter, setDeleteAfter] = useState("Never");
 
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
-  const router = useRouter();
+
+  // ✅ Check if user is logged in
+  useEffect(() => {
+    const loggedInUser = localStorage.getItem("loggedInUser");
+    if (!loggedInUser) {
+      router.push("/login");
+    } else {
+      setUsername(loggedInUser);
+      setLoadingPage(false);
+    }
+  }, [router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -43,7 +59,7 @@ export default function AdminPage() {
         field,
         jobType,
         deleteAfter,
-        expiresAt,   // 🔹 Save expiry timestamp
+        expiresAt,
         createdAt: Timestamp.now(),
       });
 
@@ -70,8 +86,25 @@ export default function AdminPage() {
     }
   };
 
+  if (loadingPage) return <p>Loading...</p>;
+
   return (
     <div className="max-w-lg mx-auto mt-10 p-4">
+      {/* Logged-in user + Logout */}
+      <div className="mb-6 flex justify-between items-center">
+        <p>Logged in as: <span className="font-bold">{username}</span></p>
+        <button
+          onClick={() => {
+            localStorage.removeItem("isLoggedIn");
+            localStorage.removeItem("loggedInUser");
+            router.push("/login");
+          }}
+          className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
+        >
+          Logout
+        </button>
+      </div>
+
       <h1 className="text-2xl font-bold mb-4">Post a Job</h1>
 
       {message && (
