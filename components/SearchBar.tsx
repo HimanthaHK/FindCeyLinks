@@ -137,8 +137,8 @@ const JobSearchHero = () => {
                 <div
                   key={job.id}
                   className="border border-[#0D1E4C] p-6 rounded-xl shadow-md bg-white
-                             hover:bg-[#0D1E4C] hover:text-white hover:font-bold
-                             hover:shadow-lg hover:scale-[1.02] transform transition-all duration-300"
+                             md:hover:bg-[#0D1E4C] md:hover:text-white md:hover:font-bold
+                             md:hover:shadow-lg md:hover:scale-[1.02] transform transition-all duration-300"
                 >
                   <div className="flex justify-between items-start">
                     <div>
@@ -156,7 +156,7 @@ const JobSearchHero = () => {
                     </span>
                     <Link
                       href={`/jobs/${job.id}`}
-                      className="inline-block text-[#C48CB3] font-medium hover:underline hover:text-pink-300"
+                      className="inline-block text-[#C48CB3] font-medium md:hover:underline md:hover:text-pink-300"
                     >
                       View Details
                     </Link>
