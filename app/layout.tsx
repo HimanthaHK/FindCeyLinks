@@ -8,7 +8,7 @@ import Script from 'next/script'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'JobAds - Find Your Dream Job',
+  title: 'CeyLinks - Find Your Dream Job',
   description: 'Discover job opportunities and advance your career',
 }
 
