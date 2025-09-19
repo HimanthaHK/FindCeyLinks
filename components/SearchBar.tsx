@@ -107,7 +107,9 @@ const JobSearchHero = () => {
               value={jobQuery}
               onChange={(e) => setJobQuery(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-              className="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 outline-none focus:ring-2 focus:ring-[#4A72D0] focus:border-[#4A72D0] transition"
+              className="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 outline-none
+                         focus:ring-2 focus:ring-[#4A72D0] focus:border-[#4A72D0] transition
+                         placeholder-gray-500"
             />
           </div>
 
@@ -119,7 +121,9 @@ const JobSearchHero = () => {
               value={locationQuery}
               onChange={(e) => setLocationQuery(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-              className="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 outline-none focus:ring-2 focus:ring-[#4A72D0] focus:border-[#4A72D0] transition"
+              className="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 outline-none
+                         focus:ring-2 focus:ring-[#4A72D0] focus:border-[#4A72D0] transition
+                         placeholder-gray-500"
             />
           </div>
 
