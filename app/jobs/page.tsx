@@ -103,8 +103,8 @@ export default function JobsPage() {
             <li
               key={job.id}
               className="border border-[#0D1E4C] p-4 sm:p-6 rounded-xl shadow-md bg-white 
-                         hover:bg-[#0D1E4C] hover:text-white hover:font-bold 
-                         hover:shadow-lg sm:hover:scale-[1.02] transform transition-all duration-300"
+                         text-[#0D1E4C] md:hover:bg-[#0D1E4C] md:hover:text-white md:hover:font-bold 
+                         hover:shadow-lg md:hover:scale-[1.02] transform transition-all duration-300"
             >
               <h2 className="text-xl sm:text-2xl font-semibold">{job.title}</h2>
               <p className="mt-1 text-sm sm:text-base">
@@ -113,7 +113,7 @@ export default function JobsPage() {
               <p className="mt-3 text-sm sm:text-base line-clamp-3">{job.description}</p>
               <Link
                 href={`/jobs/${job.id}`}
-                className="inline-block mt-4 text-[#C48CB3] font-medium hover:underline hover:text-pink-300 text-sm sm:text-base"
+                className="inline-block mt-4 text-[#C48CB3] font-medium hover:underline md:hover:text-pink-300 text-sm sm:text-base"
               >
                 View Details
               </Link>
