@@ -68,80 +68,125 @@ export default function JobsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-white px-4">
-        <h1 className="text-2xl md:text-3xl font-bold mb-4 text-[#0D1E4C] text-center">Job Listings</h1>
-        <div className="w-12 h-12 border-4 border-t-[#C48CB3] border-r-[#0D1E4C] border-b-[#C48CB3] border-l-[#0D1E4C] rounded-full animate-spin"></div>
-        <p className="text-gray-600 mt-4">Loading jobs...</p>
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 py-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-12">
+            <h1 className="text-3xl md:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600 mb-3">
+              Job Opportunities
+            </h1>
+            <p className="text-gray-600 text-lg">Discover your next career move</p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[...Array(6)].map((_, i) => (
+              <div key={i} className="bg-white/80 backdrop-blur-sm rounded-xl shadow-md p-6 animate-pulse border border-gray-200/50">
+                <div className="h-7 bg-gradient-to-r from-gray-200 to-gray-300 rounded-lg w-3/4 mb-4"></div>
+                <div className="h-4 bg-gradient-to-r from-gray-200 to-gray-300 rounded-lg w-1/2 mb-6"></div>
+                <div className="space-y-2">
+                  <div className="h-4 bg-gradient-to-r from-gray-200 to-gray-300 rounded-lg"></div>
+                  <div className="h-4 bg-gradient-to-r from-gray-200 to-gray-300 rounded-lg w-5/6"></div>
+                  <div className="h-4 bg-gradient-to-r from-gray-200 to-gray-300 rounded-lg w-4/6"></div>
+                </div>
+                <div className="mt-6 pt-4 border-t border-gray-200/30">
+                  <div className="h-4 bg-gradient-to-r from-gray-200 to-gray-300 rounded-lg w-1/3"></div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-white px-4">
-        <h1 className="text-2xl md:text-3xl font-bold mb-4 text-[#0D1E4C] text-center">Job Listings</h1>
-        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded max-w-md">
-          <p className="text-sm">{error}</p>
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex flex-col items-center justify-center px-4">
+        <div className="max-w-md w-full bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-8 text-center border border-gray-200/50">
+          <div className="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-gradient-to-br from-red-100 to-pink-100 mb-4 shadow-inner">
+            <svg className="h-8 w-8 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+          </div>
+          <h1 className="text-xl font-semibold text-gray-900 mb-2">Something went wrong</h1>
+          <p className="text-gray-600 mb-6">{error}</p>
+          <button 
+            onClick={() => window.location.reload()}
+            className="bg-gradient-to-r from-blue-500 to-purple-500 text-white py-3 px-6 rounded-xl font-medium hover:from-blue-600 hover:to-purple-600 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+          >
+            Try Again
+          </button>
         </div>
-        <button 
-          onClick={() => window.location.reload()}
-          className="mt-4 bg-[#0D1E4C] text-white py-2 px-4 rounded-lg font-medium hover:bg-blue-800 transition-colors"
-        >
-          Try Again
-        </button>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-white py-8 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-4xl mx-auto">
-        <h1 className="text-2xl sm:text-3xl font-bold mb-8 text-[#0D1E4C] text-center">
-          Job Listings
-        </h1>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-6xl mx-auto">
+        <div className="text-center mb-12">
+          <h1 className="text-3xl md:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600 mb-3">
+            Job Opportunities
+          </h1>
+          <p className="text-gray-600 text-lg">Discover your next career move</p>
+        </div>
 
         {jobs.length === 0 ? (
-          <div className="border border-[#0D1E4C] p-6 rounded-xl text-center bg-gray-50 shadow-lg">
-            <p className="text-gray-600 mb-4">No job listings available yet.</p>
+          <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-8 text-center border border-gray-200/50 max-w-md mx-auto">
+            <div className="mx-auto flex items-center justify-center h-20 w-20 rounded-full bg-gradient-to-br from-blue-100 to-purple-100 mb-4 shadow-inner">
+              <svg className="h-10 w-10 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+            </div>
+            <h2 className="text-xl font-semibold text-gray-900 mb-2">No job listings yet</h2>
+            <p className="text-gray-600 mb-6">Be the first to post a job opportunity!</p>
             <Link
               href="/admin"
-              className="bg-[#C48CB3] text-white py-2 px-6 rounded-lg font-medium hover:bg-pink-600 transition-colors inline-block"
+              className="inline-block bg-gradient-to-r from-blue-500 to-purple-500 text-white py-3 px-6 rounded-xl font-medium hover:from-blue-600 hover:to-purple-600 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
             >
-              Be the first to post a job!
+              Post a Job
             </Link>
           </div>
         ) : (
-          <ul className="space-y-4 sm:space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {jobs.map((job) => (
-              <li
+              <div
                 key={job.id}
-                className="border border-[#0D1E4C] p-4 sm:p-6 rounded-xl shadow-md bg-white 
-                         text-[#0D1E4C] md:hover:bg-[#0D1E4C] md:hover:text-white md:hover:font-bold 
-                         hover:shadow-lg md:hover:scale-[1.02] transform transition-all duration-300"
+                className="bg-white/80 backdrop-blur-sm rounded-xl shadow-md p-6 transition-all duration-300 hover:shadow-lg border border-gray-200/50 hover:border-blue-200/70 hover:-translate-y-1 group"
               >
-                <div className="flex justify-between items-start">
-                  <div>
-                    <h2 className="text-xl sm:text-2xl font-semibold">{job.title}</h2>
-                    <p className="mt-1 text-sm sm:text-base">
-                      {job.company} - {job.location}
-                    </p>
+                <div className="flex flex-col mb-4">
+                  <div className="mb-3">
+                    <h2 className="text-xl font-semibold text-gray-900 mb-1 group-hover:text-blue-600 transition-colors">{job.title}</h2>
+                    <p className="text-gray-700 font-medium">{job.company}</p>
                   </div>
                   {job.createdAt && (
-                    <span className="text-xs text-gray-500 md:group-hover:text-gray-300">
+                    <span className="text-sm text-gray-500 mt-2">
                       Posted: {formatDate(job.createdAt)}
                     </span>
                   )}
                 </div>
-                <p className="mt-3 text-sm sm:text-base line-clamp-3">{job.description}</p>
+                
+                <div className="flex items-center text-gray-600 mb-4">
+                  <svg className="h-4 w-4 mr-2 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  <span className="text-sm">{job.location}</span>
+                </div>
+                
+                <p className="text-gray-600 text-sm mb-6 line-clamp-3">{job.description}</p>
+                
                 <Link
                   href={`/jobs/${job.id}`}
-                  className="inline-block mt-4 text-[#C48CB3] font-medium hover:underline md:hover:text-pink-300 text-sm sm:text-base"
+                  className="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium text-sm group-hover:underline transition-all"
                 >
-                  View Details
+                  View details
+                  <svg className="h-4 w-4 ml-1 transform group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+                  </svg>
                 </Link>
-              </li>
+              </div>
             ))}
-          </ul>
+          </div>
         )}
       </div>
     </div>
