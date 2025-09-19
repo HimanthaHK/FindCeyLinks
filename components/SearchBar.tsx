@@ -20,17 +20,33 @@ const JobSearchHero = () => {
   const [locationQuery, setLocationQuery] = useState("");
   const [results, setResults] = useState<Job[]>([]);
   const [isSearching, setIsSearching] = useState(false);
+  const [hasSearched, setHasSearched] = useState(false);
 
   const handleSearch = async () => {
+    // Don't search if both fields are empty
+    if (!jobQuery.trim() && !locationQuery.trim()) {
+      setResults([]);
+      setHasSearched(true);
+      return;
+    }
+
     setIsSearching(true);
     try {
       const qRef = collection(db, "jobs");
       const filters: QueryConstraint[] = [];
 
-      if (jobQuery) filters.push(where("category", "==", jobQuery));
-      if (locationQuery) filters.push(where("location", "==", locationQuery));
+      if (jobQuery.trim()) filters.push(where("category", "==", jobQuery.trim()));
+      if (locationQuery.trim()) filters.push(where("location", "==", locationQuery.trim()));
 
-      const searchQuery = filters.length ? query(qRef, ...filters) : qRef;
+      const searchQuery = filters.length ? query(qRef, ...filters) : null;
+      
+      // If no valid filters, return empty results
+      if (!searchQuery) {
+        setResults([]);
+        setHasSearched(true);
+        return;
+      }
+
       const querySnapshot = await getDocs(searchQuery);
 
       const jobs = querySnapshot.docs.map((doc) => {
@@ -47,6 +63,7 @@ const JobSearchHero = () => {
       });
 
       setResults(jobs);
+      setHasSearched(true);
     } catch (error) {
       console.error("Search error:", error);
     } finally {
@@ -131,7 +148,21 @@ const JobSearchHero = () => {
       {/* Job Results */}
       <div className="container mx-auto px-4 py-12">
         <div className="max-w-4xl mx-auto">
-          {results.length > 0 ? (
+          {hasSearched && results.length === 0 ? (
+            <div className="text-center py-12">
+              <div className="mx-auto w-24 h-24 rounded-full bg-blue-50 flex items-center justify-center mb-6">
+                <Search className="w-12 h-12 text-[#4A72D0]" />
+              </div>
+              <h3 className="text-xl font-medium text-gray-700 mb-2">
+                {!jobQuery.trim() && !locationQuery.trim() 
+                  ? "Please enter a job title or location to search" 
+                  : "No jobs found matching your criteria"}
+              </h3>
+              <p className="text-gray-500 max-w-md mx-auto mb-8">
+                Try different keywords or browse all available jobs
+              </p>
+            </div>
+          ) : results.length > 0 ? (
             <div className="space-y-6">
               {results.map((job) => (
                 <div
