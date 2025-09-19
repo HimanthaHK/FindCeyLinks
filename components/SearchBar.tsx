@@ -23,7 +23,6 @@ const JobSearchHero = () => {
   const [hasSearched, setHasSearched] = useState(false);
 
   const handleSearch = async () => {
-    // Don't search if both fields are empty
     if (!jobQuery.trim() && !locationQuery.trim()) {
       setResults([]);
       setHasSearched(true);
@@ -40,7 +39,6 @@ const JobSearchHero = () => {
 
       const searchQuery = filters.length ? query(qRef, ...filters) : null;
       
-      // If no valid filters, return empty results
       if (!searchQuery) {
         setResults([]);
         setHasSearched(true);
@@ -167,7 +165,9 @@ const JobSearchHero = () => {
               {results.map((job) => (
                 <div
                   key={job.id}
-                  className="border border-[#0D1E4C] p-6 rounded-xl shadow-md bg-white
+                  className="border border-[#0D1E4C] p-6 rounded-xl shadow-md
+                             bg-white text-[#0D1E4C] 
+                             hover:bg-[#0D1E4C] hover:text-white active:bg-[#0D1E4C] active:text-white
                              md:hover:bg-[#0D1E4C] md:hover:text-white md:hover:font-bold
                              md:hover:shadow-lg md:hover:scale-[1.02] transform transition-all duration-300"
                 >
@@ -187,7 +187,7 @@ const JobSearchHero = () => {
                     </span>
                     <Link
                       href={`/jobs/${job.id}`}
-                      className="inline-block text-[#C48CB3] font-medium md:hover:underline md:hover:text-pink-300"
+                      className="inline-block text-[#C48CB3] font-medium hover:underline md:hover:text-pink-300"
                     >
                       View Details
                     </Link>
