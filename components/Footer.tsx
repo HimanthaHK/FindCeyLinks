@@ -215,11 +215,7 @@ export default function Footer() {
         </div>
         
         {/* Made with love */}
-        <div className="text-center mt-4">
-          <p className="text-xs text-gray-400 flex items-center justify-center">
-            Made with <Heart className="w-3 h-3 mx-1 text-red-500 fill-current" /> in Sri Lanka
-          </p>
-        </div>
+
       </div>
     </footer>
   );
