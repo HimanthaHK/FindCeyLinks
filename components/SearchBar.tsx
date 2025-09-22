@@ -4,7 +4,6 @@ import { db } from "@/lib/firebase";
 import {
   collection,
   query,
-  where,
   getDocs,
   Timestamp,
   QueryConstraint,
@@ -33,7 +32,7 @@ const JobSearchHero = () => {
   const handleSearch = async () => {
     if (!jobQuery.trim() && !locationQuery.trim()) {
       setResults([]);
-      setHasSearched(true);
+      setHasSearched(false);
       return;
     }
 
@@ -41,10 +40,6 @@ const JobSearchHero = () => {
     try {
       const qRef = collection(db, "jobs");
       const filters: QueryConstraint[] = [];
-
-      // For filtering by field/jobType, use exact match if needed
-      // Here we just do text search locally
-
       const searchQuery = query(qRef, ...filters);
       const querySnapshot = await getDocs(searchQuery);
 
@@ -58,7 +53,7 @@ const JobSearchHero = () => {
             location: data.location ?? "",
             category: data.category ?? "",
             description: data.description ?? "",
-            jobType: data.field ?? "Onsite", // field = Remote/Onsite/Hybrid
+            jobType: data.field ?? "Onsite",
             createdAt: data.createdAt ?? null,
           } as Job;
         })
@@ -96,7 +91,7 @@ const JobSearchHero = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="bg-white">
       {/* Hero Section */}
       <div className="bg-gradient-to-r from-[#1A2F5F] via-[#2A4B8C] to-[#1A2F5F] text-white py-16 md:py-20">
         <div className="container mx-auto px-4 text-center">
@@ -104,22 +99,24 @@ const JobSearchHero = () => {
             Discover Your Next Career Move
           </h1>
           <p className="text-white/90 max-w-2xl mx-auto mb-8 text-lg">
-            Explore thousands of opportunities across Sri Lanka - find the perfect role for your skills and ambitions
+            Explore thousands of opportunities across The World  - find the
+            perfect role for your skills and ambitions
           </p>
         </div>
       </div>
 
       {/* Search Bar */}
-      <div className="container mx-auto px-4 -mt-8 md:-mt-12 relative z-10">
+      <div className="container mx-auto px-4 -mt-12 relative z-10">
         <div className="bg-white rounded-xl shadow-lg p-6 max-w-4xl mx-auto flex flex-col md:flex-row gap-4 border border-gray-200">
           <div className="flex-1 relative flex items-center">
             <Briefcase className="absolute left-3 w-5 h-5 text-[#1A2F5F]" />
             <input
               type="text"
-              placeholder='Job title, company or category'
+              placeholder="Job title, company or category"
               value={jobQuery}
               onChange={(e) => setJobQuery(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+              autoComplete="off"
               className="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 outline-none
                          focus:ring-2 focus:ring-[#4A72D0] focus:border-[#4A72D0] transition
                          placeholder-gray-500"
@@ -134,6 +131,7 @@ const JobSearchHero = () => {
               value={locationQuery}
               onChange={(e) => setLocationQuery(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+              autoComplete="off"
               className="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 outline-none
                          focus:ring-2 focus:ring-[#4A72D0] focus:border-[#4A72D0] transition
                          placeholder-gray-500"
@@ -145,29 +143,32 @@ const JobSearchHero = () => {
             disabled={isSearching}
             className="bg-gradient-to-r from-[#4A72D0] to-[#3A5BB0] hover:from-[#3A5BB0] hover:to-[#2A4B8C] text-white font-semibold px-6 py-3 rounded-lg transition flex items-center justify-center disabled:opacity-70"
           >
-            {isSearching ? "Searching..." : <><Search className="mr-2 w-4 h-4" /> Search Jobs</>}
+            {isSearching ? (
+              "Searching..."
+            ) : (
+              <>
+                <Search className="mr-2 w-4 h-4" /> Search Jobs
+              </>
+            )}
           </button>
         </div>
       </div>
 
       {/* Job Results */}
-      <div className="container mx-auto px-4 py-12">
-        <div className="max-w-6xl mx-auto">
-          {hasSearched && results.length === 0 ? (
+      {hasSearched && (
+        <div className="container mx-auto px-4 py-8">
+          {results.length === 0 ? (
             <div className="text-center py-12">
-              <div className="mx-auto w-24 h-24 rounded-full bg-blue-50 flex items-center justify-center mb-6">
-                <Search className="w-12 h-12 text-[#4A72D0]" />
-              </div>
-              <h3 className="text-xl font-medium text-gray-700 mb-2">
+              <h3 className="text-xl md:text-2xl font-semibold text-gray-800 mb-3">
                 {!jobQuery.trim() && !locationQuery.trim()
-                  ? "Please enter a job title or location to search"
-                  : "No jobs found matching your criteria"}
+                  ? "Please enter a job title or location to start searching."
+                  : "No jobs found matching your criteria."}
               </h3>
-              <p className="text-gray-500 max-w-md mx-auto mb-8">
-                Try different keywords or browse all available jobs
+              <p className="text-gray-500 max-w-md mx-auto">
+                Try adjusting your keywords or browse trending categories above.
               </p>
             </div>
-          ) : results.length > 0 ? (
+          ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {results.map((job) => (
                 <div
@@ -175,7 +176,9 @@ const JobSearchHero = () => {
                   className="bg-white/80 backdrop-blur-sm rounded-xl shadow-md p-6 transition-all duration-300 hover:shadow-lg border border-gray-200/50 hover:border-blue-200/70 hover:-translate-y-1 group relative"
                 >
                   <div
-                    className={`absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-semibold ${getJobTypeBadge(job.jobType)}`}
+                    className={`absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-semibold ${getJobTypeBadge(
+                      job.jobType
+                    )}`}
                   >
                     {job.jobType || "Unknown"}
                   </div>
@@ -189,7 +192,8 @@ const JobSearchHero = () => {
                     </div>
                     {job.createdAt && (
                       <span className="text-sm text-gray-500 mt-2">
-                        Posted: {new Date(job.createdAt.toDate()).toLocaleDateString()}
+                        Posted:{" "}
+                        {new Date(job.createdAt.toDate()).toLocaleDateString()}
                       </span>
                     )}
                   </div>
@@ -214,15 +218,20 @@ const JobSearchHero = () => {
                       viewBox="0 0 24 24"
                       stroke="currentColor"
                     >
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M9 5l7 7-7 7"
+                      />
                     </svg>
                   </Link>
                 </div>
               ))}
             </div>
-          ) : null}
+          )}
         </div>
-      </div>
+      )}
     </div>
   );
 };

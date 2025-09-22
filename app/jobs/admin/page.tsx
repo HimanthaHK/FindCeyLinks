@@ -86,135 +86,214 @@ export default function AdminPage() {
     }
   };
 
-  if (loadingPage) return <p>Loading...</p>;
+  if (loadingPage) return <p className="p-4 text-gray-800">Loading...</p>;
 
   return (
-    <div className="max-w-lg mx-auto mt-10 p-4">
-      {/* Logged-in user + Logout */}
-      <div className="mb-6 flex justify-between items-center">
-        <p>Logged in as: <span className="font-bold">{username}</span></p>
-        <button
-          onClick={() => {
-            localStorage.removeItem("isLoggedIn");
-            localStorage.removeItem("loggedInUser");
-            router.push("/login");
-          }}
-          className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
-        >
-          Logout
-        </button>
+    <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-2xl mx-auto">
+        {/* Header Section */}
+        <div className="bg-white rounded-lg shadow-sm p-6 mb-6 border border-gray-200">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
+            <div>
+              <p className="text-gray-600">Logged in as: <span className="font-bold text-gray-800">{username}</span></p>
+            </div>
+            <div className="flex gap-3 w-full sm:w-auto">
+              <button
+                onClick={() => router.push("/jobs")}
+                className="bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200 transition-colors text-sm font-medium w-full sm:w-auto"
+              >
+                View Jobs
+              </button>
+              <button
+                onClick={() => {
+                  localStorage.removeItem("isLoggedIn");
+                  localStorage.removeItem("loggedInUser");
+                  router.push("/login");
+                }}
+                className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors text-sm font-medium w-full sm:w-auto"
+              >
+                Logout
+              </button>
+            </div>
+          </div>
+          
+          <h1 className="text-2xl font-bold text-gray-900 mb-2">Post a Job</h1>
+          <p className="text-gray-600">Fill in the details below to post a new job listing</p>
+        </div>
+
+        {/* Message Alert */}
+        {message && (
+          <div
+            className={`p-4 mb-6 rounded-lg ${
+              message.includes("Error")
+                ? "bg-red-50 border border-red-200 text-red-700"
+                : "bg-green-50 border border-green-200 text-green-700"
+            }`}
+          >
+            {message}
+          </div>
+        )}
+
+        {/* Job Form */}
+        <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div className="grid grid-cols-1 gap-6">
+            {/* Title */}
+            <div>
+              <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-2">Job Title *</label>
+              <input 
+                type="text" 
+                id="title" 
+                placeholder="Software Engineer"
+                value={title} 
+                onChange={(e) => setTitle(e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                required 
+                disabled={loading} 
+              />
+            </div>
+
+            {/* Company */}
+            <div>
+              <label htmlFor="company" className="block text-sm font-medium text-gray-700 mb-2">Company *</label>
+              <input 
+                type="text" 
+                id="company" 
+                placeholder="Company Name"
+                value={company} 
+                onChange={(e) => setCompany(e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                required 
+                disabled={loading} 
+              />
+            </div>
+
+            {/* Location */}
+            <div>
+              <label htmlFor="location" className="block text-sm font-medium text-gray-700 mb-2">Location *</label>
+              <input 
+                type="text" 
+                id="location" 
+                placeholder="Colombo or Remote"
+                value={location} 
+                onChange={(e) => setLocation(e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                required 
+                disabled={loading} 
+              />
+            </div>
+
+            {/* Description */}
+            <div>
+              <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-2">Job Description *</label>
+              <textarea 
+                id="description" 
+                placeholder="Job responsibilities, requirements, and benefits..."
+                value={description} 
+                onChange={(e) => setDescription(e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                rows={5} 
+                required 
+                disabled={loading} 
+              />
+            </div>
+
+            {/* Category */}
+            <div>
+              <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-2">Category *</label>
+              <input 
+                type="text" 
+                id="category" 
+                placeholder="Network, IT, Software Development..."
+                value={category} 
+                onChange={(e) => setCategory(e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                required 
+                disabled={loading} 
+              />
+            </div>
+
+            {/* Field and Job Type - Side by Side on desktop */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              {/* Field */}
+              <div>
+                <label htmlFor="field" className="block text-sm font-medium text-gray-700 mb-2">Field *</label>
+                <select 
+                  id="field" 
+                  value={field} 
+                  onChange={(e) => setField(e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                  disabled={loading}
+                >
+                  <option value="Remote">Remote</option>
+                  <option value="Onsite">Onsite</option>
+                  <option value="Hybrid">Hybrid</option>
+                </select>
+              </div>
+
+              {/* Job Type */}
+              <div>
+                <label htmlFor="jobType" className="block text-sm font-medium text-gray-700 mb-2">Type *</label>
+                <select 
+                  id="jobType" 
+                  value={jobType} 
+                  onChange={(e) => setJobType(e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                  disabled={loading}
+                >
+                  <option value="Job">Job</option>
+                  <option value="Intern">Intern</option>
+                </select>
+              </div>
+            </div>
+
+            {/* Apply Link */}
+            <div>
+              <label htmlFor="applyLink" className="block text-sm font-medium text-gray-700 mb-2">Apply Link (URL) *</label>
+              <input 
+                type="url" 
+                id="applyLink" 
+                placeholder="https://company.com/apply"
+                value={applyLink} 
+                onChange={(e) => setApplyLink(e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                required 
+                disabled={loading} 
+              />
+            </div>
+
+            {/* Auto Delete */}
+            <div>
+              <label htmlFor="deleteAfter" className="block text-sm font-medium text-gray-700 mb-2">Auto Delete After</label>
+              <select 
+                id="deleteAfter" 
+                value={deleteAfter} 
+                onChange={(e) => setDeleteAfter(e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                disabled={loading}
+              >
+                <option value="Never">Never</option>
+                <option value="7">7 Days</option>
+                <option value="14">14 Days</option>
+                <option value="30">30 Days</option>
+              </select>
+            </div>
+
+            {/* Submit Button */}
+            <button 
+              type="submit"
+              className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 disabled:bg-gray-400 transition-colors font-medium text-sm"
+              disabled={loading}
+            >
+              {loading ? "Posting Job..." : "Post Job"}
+            </button>
+          </div>
+        </form>
+
+        {/* Firebase Test Component */}
+        <div className="mt-8">
+          <FirebaseTest />
+        </div>
       </div>
-
-      <h1 className="text-2xl font-bold mb-4">Post a Job</h1>
-
-      {message && (
-        <div
-          className={`p-3 mb-4 rounded ${
-            message.includes("Error")
-              ? "bg-red-100 text-red-700"
-              : "bg-green-100 text-green-700"
-          }`}
-        >
-          {message}
-        </div>
-      )}
-
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-        {/* Title */}
-        <div>
-          <label htmlFor="title" className="block mb-1 font-medium">Job Title *</label>
-          <input type="text" id="title" placeholder="Software Engineer"
-            value={title} onChange={(e) => setTitle(e.target.value)}
-            className="border p-2 rounded w-full" required disabled={loading} />
-        </div>
-
-        {/* Company */}
-        <div>
-          <label htmlFor="company" className="block mb-1 font-medium">Company *</label>
-          <input type="text" id="company" placeholder="Company Name"
-            value={company} onChange={(e) => setCompany(e.target.value)}
-            className="border p-2 rounded w-full" required disabled={loading} />
-        </div>
-
-        {/* Location */}
-        <div>
-          <label htmlFor="location" className="block mb-1 font-medium">Location *</label>
-          <input type="text" id="location" placeholder="Colombo or Remote"
-            value={location} onChange={(e) => setLocation(e.target.value)}
-            className="border p-2 rounded w-full" required disabled={loading} />
-        </div>
-
-        {/* Description */}
-        <div>
-          <label htmlFor="description" className="block mb-1 font-medium">Job Description *</label>
-          <textarea id="description" placeholder="Job responsibilities..."
-            value={description} onChange={(e) => setDescription(e.target.value)}
-            className="border p-2 rounded w-full" rows={5} required disabled={loading} />
-        </div>
-
-        {/* Category */}
-        <div>
-          <label htmlFor="category" className="block mb-1 font-medium">Category *</label>
-          <input type="text" id="category" placeholder="Network, IT..."
-            value={category} onChange={(e) => setCategory(e.target.value)}
-            className="border p-2 rounded w-full" required disabled={loading} />
-        </div>
-
-        {/* Field */}
-        <div>
-          <label htmlFor="field" className="block mb-1 font-medium">Field *</label>
-          <select id="field" value={field} onChange={(e) => setField(e.target.value)}
-            className="border p-2 rounded w-full" disabled={loading}>
-            <option value="Remote">Remote</option>
-            <option value="Onsite">Onsite</option>
-            <option value="Hybrid">Hybrid</option>
-          </select>
-        </div>
-
-        {/* Job Type */}
-        <div>
-          <label htmlFor="jobType" className="block mb-1 font-medium">Type *</label>
-          <select id="jobType" value={jobType} onChange={(e) => setJobType(e.target.value)}
-            className="border p-2 rounded w-full" disabled={loading}>
-            <option value="Job">Job</option>
-            <option value="Intern">Intern</option>
-          </select>
-        </div>
-
-        {/* Apply Link */}
-        <div>
-          <label htmlFor="applyLink" className="block mb-1 font-medium">Apply Link (URL) *</label>
-          <input type="url" id="applyLink" placeholder="https://company.com/apply"
-            value={applyLink} onChange={(e) => setApplyLink(e.target.value)}
-            className="border p-2 rounded w-full" required disabled={loading} />
-        </div>
-
-        {/* Auto Delete */}
-        <div>
-          <label htmlFor="deleteAfter" className="block mb-1 font-medium">Auto Delete After</label>
-          <select id="deleteAfter" value={deleteAfter} onChange={(e) => setDeleteAfter(e.target.value)}
-            className="border p-2 rounded w-full" disabled={loading}>
-            <option value="Never">Never</option>
-            <option value="7">7 Days</option>
-            <option value="14">14 Days</option>
-            <option value="30">30 Days</option>
-          </select>
-        </div>
-
-        <button type="submit"
-          className="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 disabled:bg-gray-400"
-          disabled={loading}>
-          {loading ? "Posting Job..." : "Post Job"}
-        </button>
-      </form>
-
-      <div className="mt-6">
-        <button onClick={() => router.push("/jobs")} className="text-blue-600 hover:underline">
-          ← Back to Job Listings
-        </button>
-      </div>
-
-      <div className="mt-8"><FirebaseTest /></div>
     </div>
   );
 }
