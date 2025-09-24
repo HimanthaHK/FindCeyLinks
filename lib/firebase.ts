@@ -1,8 +1,8 @@
 import { initializeApp, getApps } from "firebase/app";
 import { getFirestore, enableIndexedDbPersistence } from "firebase/firestore";
 import { getAnalytics } from "firebase/analytics";
+import { getAuth } from "firebase/auth";  // ✅ Add this
 
-// ✅ Your NEW Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyA9FspNqqMEQ53xPnM19OzAuUIK4uFNrxo",
   authDomain: "findceylinks-3490e.firebaseapp.com",
@@ -13,30 +13,22 @@ const firebaseConfig = {
   measurementId: "G-CJPY0RGB2Y"
 };
 
-// ✅ Make sure app is initialized only once
 const app = !getApps().length ? initializeApp(firebaseConfig) : getApps()[0];
 
-// Initialize Firestore
+// Firestore
 export const db = getFirestore(app);
 
-// Enable offline persistence (optional but recommended)
+// Enable offline persistence
 if (typeof window !== "undefined") {
-  enableIndexedDbPersistence(db)
-    .then(() => {
-      console.log("Firestore offline persistence enabled");
-    })
-    .catch((err) => {
-      if (err.code === 'failed-precondition') {
-        console.warn("Multiple tabs open, persistence can only be enabled in one tab at a time.");
-      } else if (err.code === 'unimplemented') {
-        console.warn("The current browser doesn't support all of the features required to enable persistence.");
-      } else {
-        console.warn("Firestore offline persistence error:", err);
-      }
-    });
+  enableIndexedDbPersistence(db).catch((err) => {
+    console.warn("Firestore offline persistence error:", err);
+  });
 }
 
-// (Optional) Analytics – only works in browser
+// Firebase Auth
+export const auth = getAuth(app); // ✅ Export auth
+
+// Analytics (optional)
 let analytics;
 if (typeof window !== "undefined") {
   analytics = getAnalytics(app);
