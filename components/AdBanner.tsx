@@ -10,10 +10,11 @@ export default function ResponsiveAdBanner() {
     if (!AD_KEY) return;
 
     const adContainer = document.createElement("div");
-    adContainer.style.width = "100%";
-    adContainer.style.height = "0";
-    adContainer.style.paddingBottom = "83.33%"; // 250 / 300 ratio
-    adContainer.style.position = "relative";
+    adContainer.style.width = "300px";
+    adContainer.style.height = "250px";
+    adContainer.style.display = "flex";
+    adContainer.style.justifyContent = "center";
+    adContainer.style.alignItems = "center";
     adContainer.style.overflow = "hidden";
     adContainer.style.borderRadius = "8px";
 
@@ -51,7 +52,7 @@ export default function ResponsiveAdBanner() {
     <div className="w-full flex justify-center my-4 px-2">
       <div
         ref={adRootRef}
-        className="relative w-full max-w-[300px] bg-gray-100 border border-gray-300 rounded-lg overflow-hidden"
+        className="relative bg-gray-100 border border-gray-300 rounded-lg w-[300px] min-h-[250px] flex items-center justify-center overflow-hidden"
       />
     </div>
   );
