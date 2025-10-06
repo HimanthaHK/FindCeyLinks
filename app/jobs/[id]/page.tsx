@@ -5,6 +5,8 @@ import { useParams } from "next/navigation";
 import { db } from "@/lib/firebase";
 import { doc, getDoc, DocumentData, Timestamp } from "firebase/firestore";
 import Link from "next/link";
+import ResponsiveAdBanner2 from "@/components/ResponsiveAdBanner2";
+
 
 interface Job {
   id: string;
@@ -207,6 +209,9 @@ export default function JobDetailPage() {
             </div>
           </div>
         </div>
+
+        <ResponsiveAdBanner2 />
+
 
         {/* Description Card */}
         <div className="bg-white rounded-2xl shadow-xl overflow-hidden transform hover:shadow-2xl transition-all duration-300">

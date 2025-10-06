@@ -5,7 +5,6 @@ import Navbar from '@/components/NavBar'
 import Footer from '@/components/Footer'
 import AdBanner from '@/components/AdBanner' // Secure Adsterra component
 import Script from 'next/script'
-
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
