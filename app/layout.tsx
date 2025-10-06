@@ -41,14 +41,14 @@ export default function RootLayout({
       <body className={`${inter.className} flex flex-col min-h-screen`}>
         <Navbar />
 
-        <main className="pt-16 flex-grow bg-gray-50 pb-12">
+        <main className="pt-16 flex-grow bg-gray-50">
           {children}
+          
+          {/* Secure Adsterra banner before footer */}
+          <div className="px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
+            <AdBanner />
+          </div>
         </main>
-
-        {/* Secure Adsterra banner at the bottom */}
-        <div className="px-4 sm:px-6 lg:px-8 mb-4 sm:mb-6">
-          <AdBanner />
-        </div>
 
         <Footer />
       </body>
