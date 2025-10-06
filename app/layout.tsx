@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import Navbar from '@/components/NavBar'
 import Footer from '@/components/Footer'
+import AdBanner from '@/components/AdBanner'
 import Script from 'next/script'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -24,13 +25,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        {/* Favicon links (for reliability) */}
         <link rel="icon" href="/weblogo.ico" sizes="any" />
         <link rel="shortcut icon" href="/weblogo.ico" />
         <link rel="apple-touch-icon" href="/weblogo.ico" />
         <meta name="theme-color" content="#1A2F5F" />
 
-        {/* Google AdSense Script - Add your publisher ID when ready */}
         <Script
           id="adsbygoogle-init"
           strategy="afterInteractive"
@@ -44,6 +43,11 @@ export default function RootLayout({
         <main className="pt-16 flex-grow bg-gray-50 pb-12">
           {children}
         </main>
+
+        {/* Ad only at the bottom */}
+        <div className="px-4 sm:px-6 lg:px-8 mb-4 sm:mb-6">
+          <AdBanner />
+        </div>
 
         <Footer />
       </body>
