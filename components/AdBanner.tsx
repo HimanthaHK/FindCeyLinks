@@ -9,6 +9,7 @@ export default function ResponsiveAdBanner() {
     const AD_KEY = process.env.NEXT_PUBLIC_ADSTERRA_KEY;
     if (!AD_KEY) return;
 
+    // Create ad container
     const adContainer = document.createElement("div");
     adContainer.style.width = "300px";
     adContainer.style.height = "250px";
@@ -18,9 +19,12 @@ export default function ResponsiveAdBanner() {
     adContainer.style.overflow = "hidden";
     adContainer.style.borderRadius = "8px";
 
-    if (adRootRef.current) adRootRef.current.appendChild(adContainer);
+    // Save the current root to avoid React ref issues
+    const currentRoot = adRootRef.current;
+    if (currentRoot) currentRoot.appendChild(adContainer);
 
-    (window as any).atOptions = {
+    // Properly type window.atOptions
+    (window as Window & { atOptions?: Record<string, unknown> }).atOptions = {
       key: AD_KEY,
       format: "iframe",
       height: 250,
@@ -30,6 +34,7 @@ export default function ResponsiveAdBanner() {
       node: adContainer,
     };
 
+    // Load Adsterra script
     const script = document.createElement("script");
     script.type = "text/javascript";
     script.async = true;
@@ -37,14 +42,13 @@ export default function ResponsiveAdBanner() {
 
     adContainer.appendChild(script);
 
+    // Cleanup function
     return () => {
-      try {
-        script.remove();
-        if (adRootRef.current?.contains(adContainer)) {
-          adRootRef.current.removeChild(adContainer);
-        }
-      } catch {}
-      delete (window as any).atOptions;
+      script.remove();
+      if (currentRoot?.contains(adContainer)) {
+        currentRoot.removeChild(adContainer);
+      }
+      delete (window as Window & { atOptions?: Record<string, unknown> }).atOptions;
     };
   }, []);
 
