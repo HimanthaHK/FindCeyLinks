@@ -1,58 +1,49 @@
-"use client"; // Needed if using Next.js App Router
+"use client"
 
-import Script from "next/script";
-import React from "react";
+import { useEffect } from "react";
 
-const AdBanner: React.FC = () => {
+export default function ResponsiveAdBanner() {
+  useEffect(() => {
+    const AD_KEY = process.env.NEXT_PUBLIC_ADSTERRA_KEY;
+
+    if (!AD_KEY) {
+      console.warn("Adsterra key is missing. Please set NEXT_PUBLIC_ADSTERRA_KEY in .env.local");
+      return;
+    }
+
+    // Create script element
+    const script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src = `//www.highperformanceformat.com/${AD_KEY}/invoke.js`;
+    script.async = true;
+
+    // Inject atOptions before the script
+    const atOptionsScript = document.createElement("script");
+    atOptionsScript.type = "text/javascript";
+    atOptionsScript.innerHTML = `
+      atOptions = {
+        key: "${AD_KEY}",
+        format: "iframe",
+        height: 250,
+        width: 300,
+        params: {}
+      };
+    `;
+
+    // Append scripts to document body
+    document.body.appendChild(atOptionsScript);
+    document.body.appendChild(script);
+
+    // Cleanup on unmount
+    return () => {
+      document.body.removeChild(script);
+      document.body.removeChild(atOptionsScript);
+    };
+  }, []);
+
   return (
-    <div className="flex justify-center items-center my-4">
-      {/* Desktop / Tablet Banner */}
-      <div className="hidden sm:block">
-        <Script
-          id="adsterra-300x250"
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `
-              atOptions = {
-                'key' : '7b68a22ec773a99f7ad663114d9be956',
-                'format' : 'iframe',
-                'height' : 250,
-                'width' : 300,
-                'params' : {}
-              };
-            `,
-          }}
-        />
-        <Script
-          strategy="afterInteractive"
-          src="//www.highperformanceformat.com/7b68a22ec773a99f7ad663114d9be956/invoke.js"
-        />
-      </div>
-
-      {/* Mobile Banner (Optional: use 320x50) */}
-      <div className="block sm:hidden">
-        <Script
-          id="adsterra-320x50"
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `
-              atOptions = {
-                'key' : '7b68a22ec773a99f7ad663114d9be956',
-                'format' : 'iframe',
-                'height' : 50,
-                'width' : 320,
-                'params' : {}
-              };
-            `,
-          }}
-        />
-        <Script
-          strategy="afterInteractive"
-          src="//www.highperformanceformat.com/7b68a22ec773a99f7ad663114d9be956/invoke.js"
-        />
-      </div>
+    <div className="w-full flex justify-center my-4">
+      {/* The ad iframe will be injected here by Adsterra */}
     </div>
   );
-};
-
-export default AdBanner;
+}

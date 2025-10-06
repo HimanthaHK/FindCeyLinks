@@ -3,7 +3,7 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import Navbar from '@/components/NavBar'
 import Footer from '@/components/Footer'
-import AdBanner from '@/components/AdBanner'
+import AdBanner from '@/components/AdBanner' // Secure Adsterra component
 import Script from 'next/script'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -30,6 +30,7 @@ export default function RootLayout({
         <link rel="apple-touch-icon" href="/weblogo.ico" />
         <meta name="theme-color" content="#1A2F5F" />
 
+        {/* Google AdSense Script (optional) */}
         <Script
           id="adsbygoogle-init"
           strategy="afterInteractive"
@@ -44,7 +45,7 @@ export default function RootLayout({
           {children}
         </main>
 
-        {/* Ad only at the bottom */}
+        {/* Secure Adsterra banner at the bottom */}
         <div className="px-4 sm:px-6 lg:px-8 mb-4 sm:mb-6">
           <AdBanner />
         </div>
